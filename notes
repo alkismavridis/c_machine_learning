@@ -1,0 +1,16 @@
+a = actual
+i = ideal
+E = Error = a-i
+
+LAYER (li)     NEURON(li, ni)
+
+δ(LAST,ni) =  f'( INP(LAST,ni) ) * δERR / δ(OUT(LAST,ni))																//SAVED DATA:  ERR(ni)    OUT(LAST, ni)
+δ(li, ni) = f'( INP(li,ni) ) * SUM(Connection_target_index:K,  w(li, ni, K) *  δ(li+1, K)  )				//SAVED DATA: w(li,ni)   OUT(li,ni)   δ(li+1, ALL)
+
+
+//δ for input layer: INGORED
+//δ for threshhold "neurons": INGORED  (in you consider thresholds actual neurons)
+
+
+δE / δ w(li, ni, target_ni) = δ (li+1, target_ni) * OUT(li, ni)													//SAVED DATA: δ, OUT
+δE / δ threshold(li, ni) =    δ(li+1, target_ni) * 1 //where li, ni refere to the last layer (thresholds are like neurons with output 1)
